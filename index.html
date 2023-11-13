@@ -1,79 +1,43 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>テキストエンコーダ</title>
+    <title>Encoding and Concatenation Example</title>
 </head>
 <body>
-
-    <!-- ユーザーがエンコードする際に使用するテキストを入力する部分 -->
-    <textarea id="inputText" placeholder="エンコードするテキストを入力"></textarea>
-
-    <!-- 名札の内容を入力する部分 -->
-    <input type="text" id="namePlate" placeholder="名札の内容を入力">
-
-    <!-- ユーザーが指定した文字だけ増やせる要素 -->
-    <div id="userInputs">
-        <div class="userInput">
-            <input type="text" class="userText" placeholder="ユーザー指定文字">
-            <button onclick="addUserInput(this)">要素を追加</button>
-        </div>
-    </div>
-
-    <!-- エンコードしてコピーするボタン -->
-    <button onclick="encodeAndCopy()">エンコードしてコピー</button>
-
     <script>
-        // ユーザーが指定した文字だけ増やせる要素を追加する関数
-        function addUserInput(button) {
-            var userInputContainer = button.parentElement;
-            var userTextInput = document.createElement('input');
-            userTextInput.type = 'text';
-            userTextInput.className = 'userText';
-            userTextInput.placeholder = 'ユーザー指定文字';
-            userInputContainer.insertBefore(userTextInput, button);
+        function encodeString(inputString, repeatCount) {
+            // Encode the input string
+            let encodedString = encodeURIComponent(inputString);
+
+            // Repeat the encoded string as per the repeatCount
+            let repeatedString = encodedString.repeat(repeatCount);
+
+            // Return the encoded and repeated string
+            return repeatedString;
         }
 
-        // エンコードしてクリップボードにコピーする関数
-        function encodeAndCopy() {
-            // ユーザーの入力を取得
-            var inputText = document.getElementById('inputText').value;
-            var namePlate = document.getElementById('namePlate').value;
-            var userTextInputs = document.getElementsByClassName('userText');
+        function generateAndConcatenate(charToRepeat, repeatCount, totalElements) {
+            let concatenatedResult = "";
 
-            // ユーザーが指定した文字を指定回数繰り返し、それをユーザーが指定した順番で繋げる
-            var userGeneratedText = "";
-            for (var i = 0; i < userTextInputs.length; i++) {
-                var userText = userTextInputs[i].value;
-                userGeneratedText += userText;
+            // Generate and concatenate the encoded content for specified number of elements
+            for (let i = 0; i < totalElements; i++) {
+                concatenatedResult += encodeString(charToRepeat, repeatCount);
             }
 
-            // 全ての入力フィールドが埋まっているか確認
-            if (inputText && namePlate && userGeneratedText) {
-                // テキストをエンコード
-                var encodedText = '<option value="line://share?text=' + encodeURIComponent(inputText + userGeneratedText + namePlate + userGeneratedText) + '">' + namePlate + '</option>';
-
-                // 一時的なテキストエリア要素を作成
-                var tempTextarea = document.createElement('textarea');
-                tempTextarea.value = encodedText;
-
-                // テキストエリアをbodyに追加
-                document.body.appendChild(tempTextarea);
-
-                // テキストを選択してコピー
-                tempTextarea.select();
-                document.execCommand('copy');
-
-                // 一時的なテキストエリアを削除
-                document.body.removeChild(tempTextarea);
-
-                alert('エンコードされたテキストがクリップボードにコピーされました！');
-            } else {
-                alert('全ての入力フィールドに入力してください。');
-            }
+            // Display the concatenated result
+            document.write(concatenatedResult);
         }
+
+        // User-specified values
+        const charToRepeat = "a"; // User-specified character
+        const repeatCount = 3;    // User-specified count
+        const totalElements = 5;  // User-specified total elements
+
+        // Call the function to generate, encode, and concatenate the content
+        generateAndConcatenate(charToRepeat, repeatCount, totalElements);
     </script>
-
 </body>
 </html>
