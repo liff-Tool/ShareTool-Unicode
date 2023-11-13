@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja"> <!-- 言語コードを日本語に設定 -->
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,22 +7,52 @@
 </head>
 <body>
 
-    <textarea id="inputText" placeholder="テキストを入力"></textarea>
+    <!-- ユーザーがエンコードする際に使用するテキストを入力する部分 -->
+    <textarea id="inputText" placeholder="エンコードするテキストを入力"></textarea>
+
+    <!-- 名札の内容を入力する部分 -->
     <input type="text" id="namePlate" placeholder="名札の内容を入力">
-    <input type="number" id="multiplier" placeholder="繰り返し回数を入力">
+
+    <!-- ユーザーが指定した文字だけ増やせる要素 -->
+    <div id="userInputs">
+        <div class="userInput">
+            <input type="text" class="userText" placeholder="ユーザー指定文字">
+            <button onclick="addUserInput(this)">要素を追加</button>
+        </div>
+    </div>
+
+    <!-- エンコードしてコピーするボタン -->
     <button onclick="encodeAndCopy()">エンコードしてコピー</button>
 
     <script>
+        // ユーザーが指定した文字だけ増やせる要素を追加する関数
+        function addUserInput(button) {
+            var userInputContainer = button.parentElement;
+            var userTextInput = document.createElement('input');
+            userTextInput.type = 'text';
+            userTextInput.className = 'userText';
+            userTextInput.placeholder = 'ユーザー指定文字';
+            userInputContainer.insertBefore(userTextInput, button);
+        }
+
+        // エンコードしてクリップボードにコピーする関数
         function encodeAndCopy() {
             // ユーザーの入力を取得
             var inputText = document.getElementById('inputText').value;
             var namePlate = document.getElementById('namePlate').value;
-            var multiplier = document.getElementById('multiplier').value;
+            var userTextInputs = document.getElementsByClassName('userText');
+
+            // ユーザーが指定した文字を指定回数繰り返し、それをユーザーが指定した順番で繋げる
+            var userGeneratedText = "";
+            for (var i = 0; i < userTextInputs.length; i++) {
+                var userText = userTextInputs[i].value;
+                userGeneratedText += userText;
+            }
 
             // 全ての入力フィールドが埋まっているか確認
-            if (inputText && namePlate && multiplier) {
+            if (inputText && namePlate && userGeneratedText) {
                 // テキストをエンコード
-                var encodedText = encodeURIComponent('<option value="line://share?text=' + inputText.repeat(multiplier) + '">' + namePlate + '</option>');
+                var encodedText = '<option value="line://share?text=' + encodeURIComponent(inputText + userGeneratedText + namePlate + userGeneratedText) + '">' + namePlate + '</option>';
 
                 // 一時的なテキストエリア要素を作成
                 var tempTextarea = document.createElement('textarea');
@@ -40,7 +70,7 @@
 
                 alert('エンコードされたテキストがクリップボードにコピーされました！');
             } else {
-                alert('テキスト、名札、繰り返し回数を入力してください。');
+                alert('全ての入力フィールドに入力してください。');
             }
         }
     </script>
