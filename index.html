@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encoder</title>
+</head>
+<body>
+
+    <textarea id="inputText" placeholder="Enter text"></textarea>
+    <input type="number" id="multiplier" placeholder="Enter multiplier">
+    <button onclick="encodeAndCopy()">Encode and Copy</button>
+
+    <script>
+        function encodeAndCopy() {
+            // Get user input
+            var inputText = document.getElementById('inputText').value;
+            var multiplier = document.getElementById('multiplier').value;
+
+            // Check if both input fields are filled
+            if (inputText && multiplier) {
+                // Encode the text
+                var encodedText = encodeURIComponent(inputText.repeat(multiplier));
+
+                // Create a temporary textarea element
+                var tempTextarea = document.createElement('textarea');
+                tempTextarea.value = encodedText;
+
+                // Append the textarea to the body
+                document.body.appendChild(tempTextarea);
+
+                // Select and copy the text
+                tempTextarea.select();
+                document.execCommand('copy');
+
+                // Remove the temporary textarea
+                document.body.removeChild(tempTextarea);
+
+                alert('Encoded text copied to clipboard!');
+            } else {
+                alert('Please enter text and multiplier.');
+            }
+        }
+    </script>
+
+</body>
+</html>
