@@ -20,13 +20,18 @@
             // 文字列をエンコード
             var encodedText = encodeURIComponent(doubledText);
 
-            // エンコードされたテキストをクリップボードにコピー
-            var dummyElement = document.createElement("textarea");
-            document.body.appendChild(dummyElement);
-            dummyElement.value = encodedText;
-            dummyElement.select();
+            // テキストエリアを作成してエンコードされたテキストを表示
+            var textArea = document.createElement("textarea");
+            textArea.value = encodedText;
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+
+            // テキストエリアを選択してコピー
+            textArea.select();
             document.execCommand("copy");
-            document.body.removeChild(dummyElement);
+
+            // テキストエリアを削除
+            document.body.removeChild(textArea);
 
             alert("エンコードされたテキストがクリップボードにコピーされました。");
         }
