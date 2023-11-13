@@ -2,42 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encoding and Concatenation Example</title>
+    <title>Encode and Copy Text</title>
 </head>
 <body>
     <script>
-        function encodeString(inputString, repeatCount) {
-            // Encode the input string
-            let encodedString = encodeURIComponent(inputString);
+        function encodeAndCopyText() {
+            // ユーザーが指定した文字
+            var inputText = prompt("文字を入力してください:");
 
-            // Repeat the encoded string as per the repeatCount
-            let repeatedString = encodedString.repeat(repeatCount);
+            // ユーザーが指定した数
+            var repeatCount = prompt("倍にしたい回数を入力してください:");
 
-            // Return the encoded and repeated string
-            return repeatedString;
+            // 入力された文字を指定された回数だけ倍にする
+            var doubledText = inputText.repeat(parseInt(repeatCount, 10));
+
+            // 文字列をエンコード
+            var encodedText = encodeURIComponent(doubledText);
+
+            // エンコードされたテキストをクリップボードにコピー
+            var dummyElement = document.createElement("textarea");
+            document.body.appendChild(dummyElement);
+            dummyElement.value = encodedText;
+            dummyElement.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummyElement);
+
+            alert("エンコードされたテキストがクリップボードにコピーされました。");
         }
 
-        function generateAndConcatenate(charToRepeat, repeatCount, totalElements) {
-            let concatenatedResult = "";
-
-            // Generate and concatenate the encoded content for specified number of elements
-            for (let i = 0; i < totalElements; i++) {
-                concatenatedResult += encodeString(charToRepeat, repeatCount);
-            }
-
-            // Display the concatenated result
-            document.write(concatenatedResult);
-        }
-
-        // User-specified values
-        const charToRepeat = "a"; // User-specified character
-        const repeatCount = 3;    // User-specified count
-        const totalElements = 5;  // User-specified total elements
-
-        // Call the function to generate, encode, and concatenate the content
-        generateAndConcatenate(charToRepeat, repeatCount, totalElements);
+        // ページ読み込み時にencodeAndCopyText関数を呼び出す
+        window.onload = encodeAndCopyText;
     </script>
 </body>
 </html>
