@@ -1,44 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja"> <!-- 言語コードを日本語に設定 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Encoder</title>
+    <title>テキストエンコーダ</title>
 </head>
 <body>
 
-    <textarea id="inputText" placeholder="Enter text"></textarea>
-    <input type="number" id="multiplier" placeholder="Enter multiplier">
-    <button onclick="encodeAndCopy()">Encode and Copy</button>
+    <textarea id="inputText" placeholder="テキストを入力"></textarea>
+    <input type="text" id="namePlate" placeholder="名札の内容を入力">
+    <input type="number" id="multiplier" placeholder="繰り返し回数を入力">
+    <button onclick="encodeAndCopy()">エンコードしてコピー</button>
 
     <script>
         function encodeAndCopy() {
-            // Get user input
+            // ユーザーの入力を取得
             var inputText = document.getElementById('inputText').value;
+            var namePlate = document.getElementById('namePlate').value;
             var multiplier = document.getElementById('multiplier').value;
 
-            // Check if both input fields are filled
-            if (inputText && multiplier) {
-                // Encode the text
-                var encodedText = encodeURIComponent(inputText.repeat(multiplier));
+            // 全ての入力フィールドが埋まっているか確認
+            if (inputText && namePlate && multiplier) {
+                // テキストをエンコード
+                var encodedText = encodeURIComponent('<option value="line://share?text=' + inputText.repeat(multiplier) + '">' + namePlate + '</option>');
 
-                // Create a temporary textarea element
+                // 一時的なテキストエリア要素を作成
                 var tempTextarea = document.createElement('textarea');
                 tempTextarea.value = encodedText;
 
-                // Append the textarea to the body
+                // テキストエリアをbodyに追加
                 document.body.appendChild(tempTextarea);
 
-                // Select and copy the text
+                // テキストを選択してコピー
                 tempTextarea.select();
                 document.execCommand('copy');
 
-                // Remove the temporary textarea
+                // 一時的なテキストエリアを削除
                 document.body.removeChild(tempTextarea);
 
-                alert('Encoded text copied to clipboard!');
+                alert('エンコードされたテキストがクリップボードにコピーされました！');
             } else {
-                alert('Please enter text and multiplier.');
+                alert('テキスト、名札、繰り返し回数を入力してください。');
             }
         }
     </script>
