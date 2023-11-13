@@ -6,13 +6,21 @@
     <title>Encode and Copy Text</title>
 </head>
 <body>
+    <label for="inputText">文字を入力：</label>
+    <input type="text" id="inputText">
+
+    <label for="repeatCount">倍にする回数：</label>
+    <input type="number" id="repeatCount" min="1" value="1">
+
+    <button onclick="encodeAndCopyText()">コピー</button>
+
     <script>
         function encodeAndCopyText() {
             // ユーザーが指定した文字
-            var inputText = prompt("文字を入力してください:");
+            var inputText = document.getElementById("inputText").value;
 
             // ユーザーが指定した数
-            var repeatCount = prompt("倍にしたい回数を入力してください:");
+            var repeatCount = document.getElementById("repeatCount").value;
 
             // 入力された文字を指定された回数だけ倍にする
             var doubledText = inputText.repeat(parseInt(repeatCount, 10));
@@ -35,9 +43,6 @@
 
             alert("エンコードされたテキストがクリップボードにコピーされました。");
         }
-
-        // ページ読み込み時にencodeAndCopyText関数を呼び出す
-        window.onload = encodeAndCopyText;
     </script>
 </body>
 </html>
